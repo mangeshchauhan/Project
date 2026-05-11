@@ -39,7 +39,7 @@ RUN mkdir -p out && \
 FROM eclipse-temurin:21-jre-alpine AS runtime
 
 # Metadata labels (good practice for image registries)
-LABEL maintainer="your-email@example.com"
+LABEL maintainer="mangesh.225@gmail.com"
 LABEL description="Student Management System – Core Java 21 Console App"
 LABEL version="1.0.0"
 
