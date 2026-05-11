@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html}">
+<body><div th:fragment="content">
+  <h2 class="mb-4">Dashboard</h2>
+  <div class="row g-3">
+    <div class="col-md-4"><div class="card text-bg-primary"><div class="card-body">
+      <h6>Total Students</h6><h2 th:text="${total}">0</h2></div></div></div>
+  </div>
+  <h4 class="mt-4">Recently Added</h4>
+  <table class="table table-striped">
+    <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Created</th></tr></thead>
+    <tbody>
+      <tr th:each="s : ${recent}">
+        <td th:text="${s.id}"></td>
+        <td th:text="${s.firstName + ' ' + s.lastName}"></td>
+        <td th:text="${s.email}"></td>
+        <td th:text="${s.course}"></td>
+        <td th:text="${#temporals.format(s.createdDate,'yyyy-MM-dd HH:mm')}"></td>
+      </tr>
+    </tbody>
+  </table>
+</div></body></html>

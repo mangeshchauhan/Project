@@ -1,54 +1,15 @@
-# ==============================================================================
-#  Dockerfile – Student Management System (Java 21)
-#  Multi-stage build:
-#    Stage 1 (builder) – compiles the Java source files
-#    Stage 2 (runtime) – copies only the .class files into a lean JRE image
-#
-#  This keeps the final image small: the JDK (compiler) is NOT shipped
-#  in the production image – only the slim JRE is.
-# ==============================================================================
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  STAGE 1 : builder
-#  Base image : eclipse-temurin:21-jdk-alpine  (JDK needed to compile)
-# ──────────────────────────────────────────────────────────────────────────────
-FROM eclipse-temurin:21-jdk-alpine AS builder
-
-# Set a clean working directory inside the container
+# Multi-stage build
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+RUN mvn -B -q dependency:go-offline
+COPY src ./src
+RUN mvn -B -q clean package -DskipTests
 
-# Copy the entire src/ folder into the container
-COPY src/ ./src/
-
-# Create the output directory and compile all source files
-RUN mkdir -p out && \
-    javac -d out \
-          -sourcepath src \
-          src/model/Student.java \
-          src/util/ValidationUtil.java \
-          src/service/StudentService.java \
-          src/Main.java
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  STAGE 2 : runtime
-#  Base image : eclipse-temurin:21-jre-alpine  (JRE only – no compiler)
-#  This image is ~100 MB smaller than the full JDK image.
-# ──────────────────────────────────────────────────────────────────────────────
-FROM eclipse-temurin:21-jre-alpine AS runtime
-
-# Metadata labels (good practice for image registries)
-LABEL maintainer="mangesh.225@gmail.com"
-LABEL description="Student Management System – Core Java 21 Console App"
-LABEL version="1.0.0"
-
-# Working directory in the runtime container
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-
-# Copy ONLY the compiled .class files from the builder stage
-COPY --from=builder /app/out ./out/
-
-# Default command: run the application
-# -it flag will be needed at docker run time for interactive console input
-CMD ["java", "-cp", "out", "Main"]
+RUN useradd -r -u 1001 appuser
+COPY --from=build /app/target/student-management.jar app.jar
+EXPOSE 8080
+USER appuser
+ENTRYPOINT ["java","-jar","/app/app.jar"]

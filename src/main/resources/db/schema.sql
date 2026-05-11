@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS studentdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE studentdb;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS students (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(120) UNIQUE NOT NULL,
+  phone_number VARCHAR(20) NOT NULL,
+  course VARCHAR(80) NOT NULL,
+  address VARCHAR(255),
+  date_of_birth DATE NOT NULL,
+  gender VARCHAR(10) NOT NULL,
+  created_date DATETIME
+);

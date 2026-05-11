@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html}">
+<body><div th:fragment="content">
+  <h2 th:text="${student.id} == null ? 'Add Student' : 'Edit Student'"></h2>
+  <form method="post"
+        th:action="${student.id} == null ? @{/students} : @{'/students/' + ${student.id}}"
+        th:object="${student}" class="row g-3">
+    <div class="col-md-6"><label class="form-label">First Name</label>
+      <input class="form-control" th:field="*{firstName}"/>
+      <div class="text-danger" th:errors="*{firstName}"></div></div>
+    <div class="col-md-6"><label class="form-label">Last Name</label>
+      <input class="form-control" th:field="*{lastName}"/>
+      <div class="text-danger" th:errors="*{lastName}"></div></div>
+    <div class="col-md-6"><label class="form-label">Email</label>
+      <input class="form-control" th:field="*{email}"/>
+      <div class="text-danger" th:errors="*{email}"></div></div>
+    <div class="col-md-6"><label class="form-label">Phone Number</label>
+      <input class="form-control" th:field="*{phoneNumber}"/>
+      <div class="text-danger" th:errors="*{phoneNumber}"></div></div>
+    <div class="col-md-6"><label class="form-label">Course</label>
+      <input class="form-control" th:field="*{course}"/>
+      <div class="text-danger" th:errors="*{course}"></div></div>
+    <div class="col-md-6"><label class="form-label">Date of Birth</label>
+      <input type="date" class="form-control" th:field="*{dateOfBirth}"/>
+      <div class="text-danger" th:errors="*{dateOfBirth}"></div></div>
+    <div class="col-md-6"><label class="form-label">Gender</label>
+      <select class="form-select" th:field="*{gender}">
+        <option value="">--</option><option>Male</option><option>Female</option><option>Other</option>
+      </select>
+      <div class="text-danger" th:errors="*{gender}"></div></div>
+    <div class="col-12"><label class="form-label">Address</label>
+      <textarea class="form-control" th:field="*{address}"></textarea></div>
+    <div class="col-12">
+      <button class="btn btn-primary">Save</button>
+      <a class="btn btn-secondary" th:href="@{/students}">Cancel</a>
+    </div>
+  </form>
+</div></body></html>
