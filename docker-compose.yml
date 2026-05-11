@@ -1,0 +1,32 @@
+# ==============================================================================
+#  docker-compose.yml – Student Management System
+#
+#  Usage:
+#    docker compose run --rm app      ← build (if needed) then run interactively
+#    docker compose build             ← build image only
+# ==============================================================================
+
+version: "3.9"
+
+services:
+  app:
+    # ── Build settings ─────────────────────────────────────────────────────
+    build:
+      context: .           # Use the current directory as the build context
+      dockerfile: Dockerfile
+
+    # ── Image name & tag ───────────────────────────────────────────────────
+    image: student-management:1.0.0
+
+    # ── Container name ─────────────────────────────────────────────────────
+    container_name: student-management-app
+
+    # ── Interactive mode ───────────────────────────────────────────────────
+    # stdin_open + tty = equivalent of `docker run -it`
+    # Required because the app reads input from the console (Scanner).
+    stdin_open: true
+    tty: true
+
+    # ── Restart policy ─────────────────────────────────────────────────────
+    # "no" is correct for an interactive console app – don't auto-restart.
+    restart: "no"
