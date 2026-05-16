@@ -13,3 +13,6 @@ COPY --from=build /app/target/student-management.jar app.jar
 EXPOSE 8080
 USER appuser
 ENTRYPOINT ["java","-jar","/app/app.jar"]
+
+# To build the Docker image, run:
+# docker build -t student-management:latest .
