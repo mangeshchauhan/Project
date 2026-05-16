@@ -13,7 +13,7 @@ services:
       interval: 10s
       retries: 5
   app:
-    build: .
+    image: mangeshc225/student-management:latest
     depends_on:
       mysql: { condition: service_healthy }
     environment:
