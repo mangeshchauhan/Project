@@ -42,7 +42,7 @@ jobs:
           script: |
                cd /opt/student-management
 
-               sudo docker compose pull
+               sudo docker compose pull ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
 
                sudo docker compose up -d
           
