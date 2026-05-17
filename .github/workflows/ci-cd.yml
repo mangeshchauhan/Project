@@ -42,9 +42,9 @@ jobs:
           script: |
                cd /opt/student-management
 
-               docker compose pull
+               sudo docker compose pull
 
-               docker compose up -d
+               sudo docker compose up -d
           
         #  docker pull ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
         #  docker stop sms || true && docker rm sms || true
