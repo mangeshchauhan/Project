@@ -52,20 +52,9 @@ jobs:
 
                docker compose pull
 
-               docker compose up -d
-          
-        #  docker pull ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
-        #  docker stop sms || true && docker rm sms || true
-        #  docker run -d --name sms --restart=always -p 8080:8080 \
-          #    -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USER=${{ secrets.DB_USER }} \
-          #   -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_NAME=studentdb \
-          #    ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
-          
-# Adding a new line
-<<<<<<< HEAD
-# adding another line
-=======
-            sudo mkdir -p /opt/student-management
+               docker compose up -d          
+   
+               sudo mkdir -p /opt/student-management
 
       # Copy compose file to EC2
       - name: Copy docker-compose.yml
@@ -94,5 +83,5 @@ jobs:
             sudo docker compose pull
 
             sudo docker compose up -d
+# Adding new line
 
->>>>>>> 4f5191746f28ed60f580d586b10f29ac73060665
