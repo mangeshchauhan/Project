@@ -28,3 +28,5 @@ volumes:
   mysql_data:
 networks:
   smsnet:
+
+# This file is used to run mutiple services together. It defines the MySQL database and the Spring Boot application, ensuring they can communicate with each other. The MySQL service is configured with a health check to ensure it is ready before the application starts. The application service depends on the MySQL service and will only start once the database is healthy.
