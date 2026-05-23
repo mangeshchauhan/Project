@@ -62,6 +62,9 @@ jobs:
           #    ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
           
 # Adding a new line
+<<<<<<< HEAD
+# adding another line
+=======
             sudo mkdir -p /opt/student-management
 
       # Copy compose file to EC2
@@ -92,3 +95,4 @@ jobs:
 
             sudo docker compose up -d
 
+>>>>>>> 4f5191746f28ed60f580d586b10f29ac73060665
