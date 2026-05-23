@@ -48,6 +48,20 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
 
           script: |
+               cd /opt/student-management
+
+               docker compose pull
+
+               docker compose up -d
+          
+        #  docker pull ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
+        #  docker stop sms || true && docker rm sms || true
+        #  docker run -d --name sms --restart=always -p 8080:8080 \
+          #    -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USER=${{ secrets.DB_USER }} \
+          #   -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_NAME=studentdb \
+          #    ${{ secrets.DOCKERHUB_USERNAME }}/student-management:latest
+          
+# Adding a new line
             sudo mkdir -p /opt/student-management
 
       # Copy compose file to EC2
