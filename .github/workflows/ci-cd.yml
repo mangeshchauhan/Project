@@ -1,7 +1,7 @@
-name: CI/CD
+name: CI/CD - Dev environment
 on:
   push:
-    branches: [main]
+    branches: [dev]
 jobs:
   build:
     runs-on: ubuntu-latest
