@@ -16,4 +16,5 @@ ENTRYPOINT ["java","-jar","/app/app.jar"]
 
 # To build the Docker image, run:
 # docker build -t student-management:latest .
-# Adding new features or fixing bugs in the application will require rebuilding the Docker image to include the latest changes. Make sure to run the build command again after making any updates to the codebase.
+## To run the Docker container, use:
+# docker run -p 8080:8080 student-management:latest
