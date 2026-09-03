@@ -16,3 +16,5 @@ ENTRYPOINT ["java","-jar","/app/app.jar"]
 
 # To build the Docker image, run:
 # docker build -t student-management:latest .
+## To run the Docker container, use:
+# docker run -p 8080:8080 student-management:latest
