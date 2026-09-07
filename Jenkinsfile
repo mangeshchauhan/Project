@@ -12,10 +12,10 @@ pipeline {
             }
         }
 
-        stage('Verify Java and Maven') {
+        stage('Build') {
             steps {
-                sh 'java -version'
-                sh 'mvn -version'
+                sh 'mvn -B clean package -DskipTests'
+                archiveArtifacts artifacts: 'target/student-management.jar', fingerprint: true
             }
         }
 
@@ -30,10 +30,12 @@ pipeline {
             }
         }
 
-        stage('Build Application') {
+        stage('Security scanning') {
             steps {
-                sh 'mvn -B clean package -DskipTests'
-                archiveArtifacts artifacts: 'target/student-management.jar', fingerprint: true
+                sh '''
+                    mvn -B org.owasp:dependency-check-maven:check \\
+                      -DfailBuildOnCVSS=7
+                '''
             }
         }
 
@@ -45,19 +47,21 @@ pipeline {
                 withCredentials([sshUserPrivateKey(
                     credentialsId: 'ec2-ssh-key',
                     keyFileVariable: 'SSH_KEY',
-                    usernameVariable: 'EC2_USER',
-                    passphraseVariable: 'SSH_PASSPHRASE'
-                ), string(credentialsId: 'ec2-host', variable: 'EC2_HOST')]) {
+                    usernameVariable: 'EC2_USER'
+                ), string(credentialsId: 'ec2-host', variable: 'EC2_HOST'),
+                    file(credentialsId: 'ec2-known-hosts', variable: 'KNOWN_HOSTS')]) {
                     sh '''
-                        scp -o StrictHostKeyChecking=no -i "$SSH_KEY" \\
+                        SSH_OPTIONS="-o StrictHostKeyChecking=yes -o UserKnownHostsFile=$KNOWN_HOSTS -o IdentitiesOnly=yes"
+
+                        scp $SSH_OPTIONS -i "$SSH_KEY" \\
                           target/student-management.jar "$EC2_USER@$EC2_HOST:/tmp/student-management.jar"
-                        ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "$EC2_USER@$EC2_HOST" \\
+
+                        ssh $SSH_OPTIONS -i "$SSH_KEY" "$EC2_USER@$EC2_HOST" \\
                           "sudo install -o ubuntu -g ubuntu -m 0644 /tmp/student-management.jar '$DEPLOY_PATH' && \\
                            sudo systemctl daemon-reload && \\
                            sudo systemctl restart student-management && \\
-                           sudo systemctl is-active --quiet student-management"
-                        ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "$EC2_USER@$EC2_HOST" \\
-                          'rm -f /tmp/student-management.jar'
+                           sudo systemctl is-active --quiet student-management && \\
+                           rm -f /tmp/student-management.jar"
                     '''
                 }
             }
